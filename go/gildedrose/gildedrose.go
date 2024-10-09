@@ -43,16 +43,17 @@ func UpdateQuality(item *Item) {
 		qualityChange = qualityChange * 2
 	}
 
-	if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
+	switch name := item.Name; name {
+	case "Backstage passes to a TAFKAL80ETC concert":
 		if item.SellIn >= 0 {
 			qualityChange = 3 - (item.SellIn / 5)
 			item.Quality = CeilingAdd(item.Quality, qualityChange, MAX_QUALITY)
 		} else {
 			item.Quality = 0
 		}
-	} else if item.Name == "Aged Brie" {
+	case "Aged Brie":
 		item.Quality = CeilingAdd(item.Quality, qualityChange, MAX_QUALITY)
-	} else {
+	default:
 		item.Quality = FloorSubtract(item.Quality, qualityChange, MIN_QUALITY)
 	}
 }
