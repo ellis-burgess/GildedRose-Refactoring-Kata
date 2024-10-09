@@ -21,23 +21,24 @@ func FloorSubtract(val, amount, min int) int {
 	return min
 }
 
+func CeilingAdd(val, amount, max int) int {
+	if val+amount < max {
+		return val + amount
+	}
+	return max
+}
+
 func UpdateQuality(item *Item) {
 	if item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert" && item.Name != "Sulfuras, Hand of Ragnaros" {
 		item.Quality = FloorSubtract(item.Quality, 1, MIN_QUALITY)
 	} else {
-		if item.Quality < MAX_QUALITY {
-			item.Quality = item.Quality + 1
-			if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
-				if item.SellIn < 11 {
-					if item.Quality < MAX_QUALITY {
-						item.Quality = item.Quality + 1
-					}
-				}
-				if item.SellIn < 6 {
-					if item.Quality < MAX_QUALITY {
-						item.Quality = item.Quality + 1
-					}
-				}
+		item.Quality = CeilingAdd(item.Quality, 1, MAX_QUALITY)
+		if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
+			if item.SellIn < 11 {
+				item.Quality = CeilingAdd(item.Quality, 1, MAX_QUALITY)
+			}
+			if item.SellIn < 6 {
+				item.Quality = CeilingAdd(item.Quality, 1, MAX_QUALITY)
 			}
 		}
 	}
