@@ -29,19 +29,22 @@ type AgedBrie struct {
 	*Item
 }
 
+func SortItem(item *Item) ItemInterface {
+	switch name := item.Name; name {
+	case "Sulfuras, Hand of Ragnaros":
+		return &Sulfuras{item}
+	case "Backstage passes to a TAFKAL80ETC concert":
+		return &BackstagePass{item}
+	case "Aged Brie":
+		return &AgedBrie{item}
+	default:
+		return item
+	}
+}
+
 func UpdateItems(items []*Item) {
 	for _, item := range items {
-		var sortedItem ItemInterface
-		switch name := item.Name; name {
-		case "Sulfuras, Hand of Ragnaros":
-			sortedItem = &Sulfuras{item}
-		case "Backstage passes to a TAFKAL80ETC concert":
-			sortedItem = &BackstagePass{item}
-		case "Aged Brie":
-			sortedItem = &AgedBrie{item}
-		default:
-			sortedItem = item
-		}
+		sortedItem := SortItem(item)
 		sortedItem.UpdateSellInDate()
 		sortedItem.UpdateQuality()
 	}
