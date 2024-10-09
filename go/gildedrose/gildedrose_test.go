@@ -17,8 +17,11 @@ func TestQualityDecreasesBeforeSellInDate(t *testing.T) {
 
 	gildedrose.UpdateQuality(items)
 
-	if items[0].Quality != 9 {
-		t.Errorf("Quality: expected %d, but got %d", 9, items[0].Quality)
+	want := 9
+	got := items[0].Quality
+
+	if want != got {
+		t.Errorf("Quality: want %d, but got %d", want, got)
 	}
 }
 
