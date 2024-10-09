@@ -6,17 +6,44 @@ const (
 	BASE_QUALITY_CHANGE = 1
 )
 
+type ItemInterface interface {
+	CalculateQualityChange() int
+	UpdateQuality()
+	UpdateSellInDate()
+}
+
 type Item struct {
 	Name            string
 	SellIn, Quality int
 }
 
+type Sulfuras struct {
+	*Item
+}
+
+type BackstagePass struct {
+	*Item
+}
+
+type AgedBrie struct {
+	*Item
+}
+
 func UpdateItems(items []*Item) {
 	for _, item := range items {
-		if item.Name != "Sulfuras, Hand of Ragnaros" {
-			item.UpdateSellInDate()
+		var sortedItem ItemInterface
+		switch name := item.Name; name {
+		case "Sulfuras, Hand of Ragnaros":
+			sortedItem = &Sulfuras{item}
+		case "Backstage passes to a TAFKAL80ETC concert":
+			sortedItem = &BackstagePass{item}
+		case "Aged Brie":
+			sortedItem = &AgedBrie{item}
+		default:
+			sortedItem = item
 		}
-		item.UpdateQuality()
+		sortedItem.UpdateSellInDate()
+		sortedItem.UpdateQuality()
 	}
 }
 
@@ -38,36 +65,49 @@ func (item *Item) UpdateSellInDate() {
 	item.SellIn -= 1
 }
 
+func (s *Sulfuras) CalculateQualityChange() int {
+	return 80
+}
+
+func (s *Sulfuras) UpdateQuality() {
+	s.Quality = s.CalculateQualityChange()
+}
+
+func (s *Sulfuras) UpdateSellInDate() {
+	s.SellIn = s.SellIn * 1
+}
+
+func (p *BackstagePass) CalculateQualityChange() int {
+	return 3 - (p.SellIn / 5)
+}
+
+func (p *BackstagePass) UpdateQuality() {
+	if p.SellIn >= 0 {
+		p.Quality = CeilingAdd(p.Quality, p.CalculateQualityChange())
+	} else {
+		p.Quality = 0
+	}
+}
+
+func (b *AgedBrie) CalculateQualityChange() int {
+	if b.SellIn >= 0 {
+		return BASE_QUALITY_CHANGE
+	} else {
+		return 2 * BASE_QUALITY_CHANGE
+	}
+}
+
+func (b *AgedBrie) UpdateQuality() {
+	b.Quality = CeilingAdd(b.Quality, b.CalculateQualityChange())
+}
+
 func (item *Item) CalculateQualityChange() int {
-	qualityChange := BASE_QUALITY_CHANGE
-
-	if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
-		return 3 - (item.SellIn / 5)
-	}
-
 	if item.SellIn < 0 {
-		return qualityChange * 2
+		return BASE_QUALITY_CHANGE * 2
 	}
-
-	return qualityChange
+	return BASE_QUALITY_CHANGE
 }
 
 func (item *Item) UpdateQuality() {
-	switch name := item.Name; name {
-	case "Backstage passes to a TAFKAL80ETC concert":
-		if item.SellIn < 0 {
-			item.Quality = MIN_QUALITY
-		} else {
-			qualityChange := item.CalculateQualityChange()
-			item.Quality = CeilingAdd(item.Quality, qualityChange)
-		}
-	case "Aged Brie":
-		qualityChange := item.CalculateQualityChange()
-		item.Quality = CeilingAdd(item.Quality, qualityChange)
-	case "Sulfuras, Hand of Ragnaros":
-		item.Quality = 80
-	default:
-		qualityChange := item.CalculateQualityChange()
-		item.Quality = FloorSubtract(item.Quality, qualityChange)
-	}
+	item.Quality = FloorSubtract(item.Quality, item.CalculateQualityChange())
 }
