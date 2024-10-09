@@ -10,7 +10,10 @@ type Item struct {
 
 func UpdateItems(items []*Item) {
 	for _, item := range items {
-		UpdateQuality(item)
+		if item.Name != "Sulfuras, Hand of Ragnaros" {
+			UpdateSellInDate(item)
+			UpdateQuality(item)
+		}
 	}
 }
 
@@ -33,12 +36,6 @@ func UpdateSellInDate(item *Item) {
 }
 
 func UpdateQuality(item *Item) {
-	if item.Name == "Sulfuras, Hand of Ragnaros" {
-		return
-	}
-
-	UpdateSellInDate(item)
-
 	if item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert" {
 		item.Quality = FloorSubtract(item.Quality, 1, MIN_QUALITY)
 	} else {
