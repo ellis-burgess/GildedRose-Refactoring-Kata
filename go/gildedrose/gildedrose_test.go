@@ -16,7 +16,7 @@ func TestQualityDecreasesBeforeSellInDate(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 
 	want := 9
 	got := items[0].Quality
@@ -35,7 +35,7 @@ func TestSellInDateDecrements(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 
 	want := 9
 	got := items[0].SellIn
@@ -54,7 +54,7 @@ func TestQualityDecreasesTwiceAfterSellInDate(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 
 	want := 8
 	got := items[0].Quality
@@ -73,7 +73,7 @@ func TestQualityIsNotNegativeBeforeSellIn(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 
 	want := 0
 	got := items[0].Quality
@@ -92,7 +92,7 @@ func TestQualityIsNotNegativeAfterSellIn(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 
 	want := 0
 	got := items[0].Quality
@@ -111,7 +111,7 @@ func TestAgedBrieQualityIncreases(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 1
 	got := items[0].Quality
 
@@ -129,7 +129,7 @@ func TestAgedBrieQualityIncreasesTwiceAfterSellIn(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 12
 	got := items[0].Quality
 
@@ -147,7 +147,7 @@ func TestAgedBrieQualityDoesNotExceedFiftyBeforeSellIn(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 50
 	got := items[0].Quality
 
@@ -165,7 +165,7 @@ func TestAgedBrieQualityDoesNotExceedFiftyAfterSellIn(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 50
 	got := items[0].Quality
 
@@ -183,7 +183,7 @@ func TestSulfurasSellInDoesNotDecrementWhilePositive(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 1
 	got := items[0].SellIn
 
@@ -201,7 +201,7 @@ func TestSulfurasSellInDoesNotDecrementWhileNegative(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := -1
 	got := items[0].SellIn
 
@@ -219,7 +219,7 @@ func TestSulfurasQualityDoesNotDecrement(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 80
 	got := items[0].Quality
 
@@ -237,7 +237,7 @@ func TestBackstagePassIncreasesByOneIfSellInGreaterThanTen(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 21
 	got := items[0].Quality
 
@@ -255,7 +255,7 @@ func TestBackstagePassQualityIncreasesByTwoIfSellInBetweenFiveAndTen(t *testing.
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 22
 	got := items[0].Quality
 
@@ -273,7 +273,7 @@ func TestBackstagePassQualityIncreasesByThreeIfSellInLessThanFive(t *testing.T) 
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 23
 	got := items[0].Quality
 
@@ -291,7 +291,7 @@ func TestBackStagePassQualityBecomesZeroAfterSellInDate(t *testing.T) {
 		},
 	}
 
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	want := 0
 	got := items[0].Quality
 
@@ -350,7 +350,7 @@ func TestOutputMatchesExpectedOutput(t *testing.T) {
 	}
 
 	i := 1
-	gildedrose.UpdateQuality(items)
+	gildedrose.UpdateItems(items)
 	if !reflect.DeepEqual(items, itemsExpectedDay1) {
 		for idx := 0; idx < len(items); idx++ {
 			if !reflect.DeepEqual(items[idx], itemsExpectedDay1[idx]) {
@@ -361,7 +361,7 @@ func TestOutputMatchesExpectedOutput(t *testing.T) {
 	}
 
 	for i < 5 {
-		gildedrose.UpdateQuality(items)
+		gildedrose.UpdateItems(items)
 		i++
 	}
 
@@ -375,7 +375,7 @@ func TestOutputMatchesExpectedOutput(t *testing.T) {
 	}
 
 	for i < 10 {
-		gildedrose.UpdateQuality(items)
+		gildedrose.UpdateItems(items)
 		i++
 	}
 
