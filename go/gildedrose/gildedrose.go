@@ -8,9 +8,6 @@ const (
 )
 
 type GildedItem interface {
-	CalculateQualityChange() int
-	UpdateQuality()
-	UpdateSellInDate()
 	Update()
 }
 
@@ -65,10 +62,6 @@ func CeilingAdd(val, amount int) int {
 	return MAX_QUALITY
 }
 
-func (item *Item) UpdateSellInDate() {
-	item.SellIn -= 1
-}
-
 func (item *Item) CalculateQualityChange() int {
 	if item.SellIn < 0 {
 		return BASE_QUALITY_CHANGE * 2
@@ -85,18 +78,9 @@ func (item *Item) Update() {
 	item.UpdateQuality()
 }
 
-func (s *Sulfuras) CalculateQualityChange() int {
-	// Quality does not change for Sulfuras
-	return 0
-}
-
 func (s *Sulfuras) UpdateQuality() {
 	// Quality for Sulfuras should always be 80
 	s.Quality = SULFURAS_QUALITY
-}
-
-func (s *Sulfuras) UpdateSellInDate() {
-	// sellin does not change for sulfuras
 }
 
 func (s *Sulfuras) Update() {
