@@ -1,8 +1,10 @@
 package gildedrose
 
-const MIN_QUALITY = 0
-const MAX_QUALITY = 50
-const BASE_QUALITY_CHANGE = 1
+const (
+	MIN_QUALITY         = 0
+	MAX_QUALITY         = 50
+	BASE_QUALITY_CHANGE = 1
+)
 
 type Item struct {
 	Name            string
@@ -44,7 +46,7 @@ func CalculateQualityChange(item *Item) int {
 	}
 
 	if item.SellIn < 0 {
-		qualityChange = qualityChange * 2
+		return qualityChange * 2
 	}
 
 	return qualityChange
