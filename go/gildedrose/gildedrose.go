@@ -14,8 +14,8 @@ type Item struct {
 func UpdateItems(items []*Item) {
 	for _, item := range items {
 		if item.Name != "Sulfuras, Hand of Ragnaros" {
-			UpdateSellInDate(item)
-			UpdateQuality(item)
+			item.UpdateSellInDate()
+			item.UpdateQuality()
 		}
 	}
 }
@@ -34,11 +34,11 @@ func CeilingAdd(val, amount int) int {
 	return MAX_QUALITY
 }
 
-func UpdateSellInDate(item *Item) {
+func (item *Item) UpdateSellInDate() {
 	item.SellIn -= 1
 }
 
-func CalculateQualityChange(item *Item) int {
+func (item *Item) CalculateQualityChange() int {
 	qualityChange := BASE_QUALITY_CHANGE
 
 	if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
@@ -52,8 +52,8 @@ func CalculateQualityChange(item *Item) int {
 	return qualityChange
 }
 
-func UpdateQuality(item *Item) {
-	qualityChange := CalculateQualityChange(item)
+func (item *Item) UpdateQuality() {
+	qualityChange := item.CalculateQualityChange()
 
 	switch name := item.Name; name {
 	case "Backstage passes to a TAFKAL80ETC concert":
