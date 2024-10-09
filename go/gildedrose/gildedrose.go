@@ -50,18 +50,14 @@ func UpdateQuality(item *Item) {
 	if item.SellIn < 0 {
 		if item.Name != "Aged Brie" {
 			if item.Name != "Backstage passes to a TAFKAL80ETC concert" {
-				if item.Quality > MIN_QUALITY {
-					if item.Name != "Sulfuras, Hand of Ragnaros" {
-						item.Quality = item.Quality - 1
-					}
+				if item.Name != "Sulfuras, Hand of Ragnaros" {
+					item.Quality = FloorSubtract(item.Quality, 1, MIN_QUALITY)
 				}
 			} else {
-				item.Quality = item.Quality - item.Quality
+				item.Quality = MIN_QUALITY
 			}
 		} else {
-			if item.Quality < MAX_QUALITY {
-				item.Quality = item.Quality + 1
-			}
+			item.Quality = CeilingAdd(item.Quality, 1, MAX_QUALITY)
 		}
 	}
 }
