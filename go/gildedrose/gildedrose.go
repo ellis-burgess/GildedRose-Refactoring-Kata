@@ -89,7 +89,13 @@ func (s *Sulfuras) UpdateSellInDate() {
 }
 
 func (p *BackstagePass) CalculateQualityChange() int {
-	return 3 - (p.SellIn / 5)
+	if p.SellIn >= 10 {
+		return 1
+	} else if p.SellIn >= 5 {
+		return 2
+	} else {
+		return 3
+	}
 }
 
 func (p *BackstagePass) UpdateQuality() {
