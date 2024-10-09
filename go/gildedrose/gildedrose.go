@@ -15,8 +15,8 @@ func UpdateItems(items []*Item) {
 	for _, item := range items {
 		if item.Name != "Sulfuras, Hand of Ragnaros" {
 			item.UpdateSellInDate()
-			item.UpdateQuality()
 		}
+		item.UpdateQuality()
 	}
 }
 
@@ -64,6 +64,8 @@ func (item *Item) UpdateQuality() {
 		}
 	case "Aged Brie":
 		item.Quality = CeilingAdd(item.Quality, qualityChange)
+	case "Sulfuras, Hand of Ragnaros":
+		item.Quality = 80
 	default:
 		item.Quality = FloorSubtract(item.Quality, qualityChange)
 	}
