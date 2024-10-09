@@ -18,18 +18,18 @@ func UpdateItems(items []*Item) {
 	}
 }
 
-func FloorSubtract(val, amount, min int) int {
-	if val-amount > min {
+func FloorSubtract(val, amount int) int {
+	if val-amount > MIN_QUALITY {
 		return val - amount
 	}
-	return min
+	return MIN_QUALITY
 }
 
-func CeilingAdd(val, amount, max int) int {
-	if val+amount < max {
+func CeilingAdd(val, amount int) int {
+	if val+amount < MAX_QUALITY {
 		return val + amount
 	}
-	return max
+	return MAX_QUALITY
 }
 
 func UpdateSellInDate(item *Item) {
@@ -58,11 +58,11 @@ func UpdateQuality(item *Item) {
 		if item.SellIn < 0 {
 			item.Quality = MIN_QUALITY
 		} else {
-			item.Quality = CeilingAdd(item.Quality, qualityChange, MAX_QUALITY)
+			item.Quality = CeilingAdd(item.Quality, qualityChange)
 		}
 	case "Aged Brie":
-		item.Quality = CeilingAdd(item.Quality, qualityChange, MAX_QUALITY)
+		item.Quality = CeilingAdd(item.Quality, qualityChange)
 	default:
-		item.Quality = FloorSubtract(item.Quality, qualityChange, MIN_QUALITY)
+		item.Quality = FloorSubtract(item.Quality, qualityChange)
 	}
 }
