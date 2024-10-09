@@ -7,10 +7,11 @@ const (
 	BASE_QUALITY_CHANGE = 1
 )
 
-type ItemInterface interface {
+type GildedItem interface {
 	CalculateQualityChange() int
 	UpdateQuality()
 	UpdateSellInDate()
+	Update()
 }
 
 type Item struct {
@@ -30,7 +31,7 @@ type AgedBrie struct {
 	*Item
 }
 
-func SortItem(item *Item) ItemInterface {
+func CreateGildedItem(item *Item) GildedItem {
 	switch name := item.Name; name {
 	case "Sulfuras, Hand of Ragnaros":
 		return &Sulfuras{item}
@@ -45,9 +46,8 @@ func SortItem(item *Item) ItemInterface {
 
 func UpdateItems(items []*Item) {
 	for _, item := range items {
-		sortedItem := SortItem(item)
-		sortedItem.UpdateSellInDate()
-		sortedItem.UpdateQuality()
+		gildedItem := CreateGildedItem(item)
+		gildedItem.Update()
 	}
 }
 
@@ -80,6 +80,11 @@ func (item *Item) UpdateQuality() {
 	item.Quality = FloorSubtract(item.Quality, item.CalculateQualityChange())
 }
 
+func (item *Item) Update() {
+	item.SellIn--
+	item.UpdateQuality()
+}
+
 func (s *Sulfuras) CalculateQualityChange() int {
 	// Quality does not change for Sulfuras
 	return 0
@@ -94,14 +99,21 @@ func (s *Sulfuras) UpdateSellInDate() {
 	// sellin does not change for sulfuras
 }
 
+func (s *Sulfuras) Update() {
+	// SellIn does not change
+	s.UpdateQuality()
+}
+
 func (p *BackstagePass) CalculateQualityChange() int {
 	if p.SellIn >= 10 {
 		return 1
-	} else if p.SellIn >= 5 {
-		return 2
-	} else {
-		return 3
 	}
+
+	if p.SellIn >= 5 {
+		return 2
+	}
+
+	return 3
 }
 
 func (p *BackstagePass) UpdateQuality() {
@@ -110,6 +122,11 @@ func (p *BackstagePass) UpdateQuality() {
 	} else {
 		p.Quality = 0
 	}
+}
+
+func (p *BackstagePass) Update() {
+	p.SellIn--
+	p.UpdateQuality()
 }
 
 func (b *AgedBrie) CalculateQualityChange() int {
@@ -122,4 +139,9 @@ func (b *AgedBrie) CalculateQualityChange() int {
 
 func (b *AgedBrie) UpdateQuality() {
 	b.Quality = CeilingAdd(b.Quality, b.CalculateQualityChange())
+}
+
+func (b *AgedBrie) Update() {
+	b.SellIn--
+	b.UpdateQuality()
 }
