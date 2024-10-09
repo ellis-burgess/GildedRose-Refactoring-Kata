@@ -3,6 +3,7 @@ package gildedrose
 const (
 	MIN_QUALITY         = 0
 	MAX_QUALITY         = 50
+	SULFURAS_QUALITY    = 80
 	BASE_QUALITY_CHANGE = 1
 )
 
@@ -80,11 +81,13 @@ func (item *Item) UpdateQuality() {
 }
 
 func (s *Sulfuras) CalculateQualityChange() int {
-	return 80
+	// Quality does not change for Sulfuras
+	return 0
 }
 
 func (s *Sulfuras) UpdateQuality() {
-	s.Quality = s.CalculateQualityChange()
+	// Quality for Sulfuras should always be 80
+	s.Quality = SULFURAS_QUALITY
 }
 
 func (s *Sulfuras) UpdateSellInDate() {
