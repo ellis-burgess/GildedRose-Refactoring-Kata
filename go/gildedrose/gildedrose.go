@@ -28,26 +28,30 @@ func CeilingAdd(val, amount, max int) int {
 	return max
 }
 
+func UpdateSellInDate(item *Item) {
+	item.SellIn -= 1
+}
+
 func UpdateQuality(item *Item) {
 	if item.Name == "Sulfuras, Hand of Ragnaros" {
 		return
 	}
+
+	UpdateSellInDate(item)
 
 	if item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert" {
 		item.Quality = FloorSubtract(item.Quality, 1, MIN_QUALITY)
 	} else {
 		item.Quality = CeilingAdd(item.Quality, 1, MAX_QUALITY)
 		if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
-			if item.SellIn < 11 {
+			if item.SellIn < 10 {
 				item.Quality = CeilingAdd(item.Quality, 1, MAX_QUALITY)
 			}
-			if item.SellIn < 6 {
+			if item.SellIn < 5 {
 				item.Quality = CeilingAdd(item.Quality, 1, MAX_QUALITY)
 			}
 		}
 	}
-
-	item.SellIn = item.SellIn - 1
 
 	if item.SellIn < 0 {
 		if item.Name != "Aged Brie" {
