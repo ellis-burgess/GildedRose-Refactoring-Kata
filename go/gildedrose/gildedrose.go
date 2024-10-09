@@ -38,24 +38,20 @@ func UpdateSellInDate(item *Item) {
 func UpdateQuality(item *Item) {
 	qualityChange := 1
 
+	if item.SellIn < 0 {
+		qualityChange = qualityChange * 2
+	}
+
 	if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
-		qualityChange = 3 - (item.SellIn / 5)
-		item.Quality = CeilingAdd(item.Quality, qualityChange, MAX_QUALITY)
+		if item.SellIn >= 0 {
+			qualityChange = 3 - (item.SellIn / 5)
+			item.Quality = CeilingAdd(item.Quality, qualityChange, MAX_QUALITY)
+		} else {
+			item.Quality = 0
+		}
 	} else if item.Name == "Aged Brie" {
 		item.Quality = CeilingAdd(item.Quality, qualityChange, MAX_QUALITY)
 	} else {
 		item.Quality = FloorSubtract(item.Quality, qualityChange, MIN_QUALITY)
-	}
-
-	if item.SellIn < 0 {
-		if item.Name == "Aged Brie" {
-			item.Quality = CeilingAdd(item.Quality, 1, MAX_QUALITY)
-		} else {
-			if item.Name != "Backstage passes to a TAFKAL80ETC concert" {
-				item.Quality = FloorSubtract(item.Quality, 1, MIN_QUALITY)
-			} else {
-				item.Quality = MIN_QUALITY
-			}
-		}
 	}
 }
