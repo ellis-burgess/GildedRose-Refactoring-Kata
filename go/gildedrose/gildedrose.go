@@ -65,6 +65,17 @@ func (item *Item) UpdateSellInDate() {
 	item.SellIn -= 1
 }
 
+func (item *Item) CalculateQualityChange() int {
+	if item.SellIn < 0 {
+		return BASE_QUALITY_CHANGE * 2
+	}
+	return BASE_QUALITY_CHANGE
+}
+
+func (item *Item) UpdateQuality() {
+	item.Quality = FloorSubtract(item.Quality, item.CalculateQualityChange())
+}
+
 func (s *Sulfuras) CalculateQualityChange() int {
 	return 80
 }
@@ -74,7 +85,7 @@ func (s *Sulfuras) UpdateQuality() {
 }
 
 func (s *Sulfuras) UpdateSellInDate() {
-	s.SellIn = s.SellIn * 1
+	// sellin does not change for sulfuras
 }
 
 func (p *BackstagePass) CalculateQualityChange() int {
@@ -99,15 +110,4 @@ func (b *AgedBrie) CalculateQualityChange() int {
 
 func (b *AgedBrie) UpdateQuality() {
 	b.Quality = CeilingAdd(b.Quality, b.CalculateQualityChange())
-}
-
-func (item *Item) CalculateQualityChange() int {
-	if item.SellIn < 0 {
-		return BASE_QUALITY_CHANGE * 2
-	}
-	return BASE_QUALITY_CHANGE
-}
-
-func (item *Item) UpdateQuality() {
-	item.Quality = FloorSubtract(item.Quality, item.CalculateQualityChange())
 }
