@@ -113,14 +113,6 @@ func (p *BackstagePass) Update() {
 	p.UpdateQuality()
 }
 
-func (b *AgedBrie) CalculateQualityChange() int {
-	if b.SellIn >= 0 {
-		return BASE_QUALITY_CHANGE
-	} else {
-		return 2 * BASE_QUALITY_CHANGE
-	}
-}
-
 func (b *AgedBrie) UpdateQuality() {
 	b.Quality = CeilingAdd(b.Quality, b.CalculateQualityChange())
 }
